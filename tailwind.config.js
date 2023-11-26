@@ -12,6 +12,13 @@ module.exports = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+      colors: {
+        'main-grey': '#edede9',
+        'main-pink': '#ffd6ff'
+      },
+      fontFamily: {
+        wild: ['Kdam Thmor Pro']
+      }
     },
   },
   plugins: [],
