@@ -5,28 +5,47 @@ import { getChannelDetail, getComment, getVideoDetail } from "./action";
 import Appbar from "./components/AppBar";
 import Loading from "./components/Loading";
 import { ChannelHeader, VideoHeader } from "./components/ChannelHeader";
+import Result from "./components/Result";
+import Comments from "./components/Comments";
 
 export default function Home() {
   const { data: session } = useSession();
   const [videoUrl, setVideoUrl] = useState("");
   const [isLoading, setLoading] = useState(false);
   const [comments, setComments] = useState([]);
+  const [result, setResult] = useState(null);
   const [channel, setChannel] = useState({});
   const [video, setVideo] = useState({});
 
   const filterText = (inputText) => {
     // Remove emojis
     const noEmojis = inputText.replace(/[\u{1F600}-\u{1F6FF}]/gu, "");
-
     // Remove special characters
     const noSpecialChars = noEmojis.replace(/[^\w\s]/gi, "");
 
     return noSpecialChars;
   };
 
+  const anazlyzeComments = async (comments) => {
+    try {
+      const data = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/analyze`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ comment_data: comments }),
+      });
+      const result = await data.json();
+      return result;
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // validate url: https://www.youtube.com/watch?v=A53T9_V8aFk
     if (!videoUrl.includes("youtube.com/watch?v=")) {
       return;
     }
@@ -45,6 +64,12 @@ export default function Home() {
       let filtered_comments = comment.map((item) => filterText(item));
       filtered_comments = filtered_comments.filter((item) => item !== "");
       setComments(filtered_comments);
+      console.log(filtered_comments);
+      if (filtered_comments.length > 0) {
+        const result = await anazlyzeComments(filtered_comments);
+        console.log(result);
+        setResult(result);
+      }
       setVideoUrl("");
       setLoading(false);
     } else {
@@ -61,6 +86,7 @@ export default function Home() {
           <p className="ml-4 text-[1.5rem] font-normal font-mono">
             Youtube Video Comment Semantic Explorer
           </p>
+          <p className="ml-4 mt-2 font-bold"> By: Daniel Truong </p>
           <form onSubmit={handleSubmit}>
             <p className="ml-4 mt-12 text-[1.25rem]">Paste Youtube Video URL</p>
             <input
@@ -95,9 +121,14 @@ export default function Home() {
               </div>
               <div className="mt-12">
                 <p className="font-mono font-bold text-[1.25rem]"> Result </p>
+                <Result result={result} />
               </div>
             </div>
           )}
+          <div className="ml-12 mt-8">
+            <p className="font-mono font-bold text-2xl "> Where the result comes from </p>
+            <Comments comments={comments} result={result} />
+          </div>
         </div>
       </div>
     </main>
