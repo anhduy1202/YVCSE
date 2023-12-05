@@ -85,7 +85,7 @@ export default function Home() {
         <div className="bg-main-grey min-h-screen">
           <p className="m-4 text-[4rem] font-bold font-mono"> YVCSE </p>
           <p className="ml-4 text-[1.5rem] font-normal font-mono">
-            Youtube Video Comment Semantic Explorer
+            Youtube Video Comment Sentiment Explorer
           </p>
           <p className="ml-4 mt-2 font-bold"> By: Daniel Truong </p>
           <form onSubmit={handleSubmit}>

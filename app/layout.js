@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "YVCSE",
-  description: "Youtube Video Comment Semantic Explorer",
+  description: "Youtube Video Comment Sentiment Explorer",
 };
 
 export default function RootLayout({ children }) {
