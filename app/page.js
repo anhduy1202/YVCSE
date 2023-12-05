@@ -53,6 +53,7 @@ export default function Home() {
     if (session) {
       setLoading(true);
       const data = await getComment(videoId);
+      console.log(data);
       const channelId = data[0].channelId;
       const videoData = await getVideoDetail(videoId);
       const channelData = await getChannelDetail(channelId);

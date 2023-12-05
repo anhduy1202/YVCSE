@@ -4,7 +4,7 @@ export async function getComment(videoId) {
     const apiKey = process.env.API_KEY
     const accessToken = "";
   
-    const url = `${apiUrl}?part=snippet%2Creplies&videoId=${videoId}&key=${apiKey}`;
+    const url = `${apiUrl}?part=snippet&order=relevance&videoId=${videoId}&key=${apiKey}`;
   
     try {
       const response = await fetch(url, {
